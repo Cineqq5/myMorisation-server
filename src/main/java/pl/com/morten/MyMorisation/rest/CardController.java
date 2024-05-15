@@ -62,5 +62,11 @@ public class CardController {
         cardService.deleteCard(cardId);
     }
 
+    @GetMapping("/user/{userId}/schedule/{minutes}")
+    public List<Long> getAllCardsForUser(@PathVariable("userId") long userId,
+                                         @PathVariable("minutes") int minutes) {
+        return cardService.getScheduledList(userId, minutes);
+    }
+
 
 }

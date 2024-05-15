@@ -10,6 +10,7 @@ import pl.com.morten.MyMorisation.jpa.entity.Cards;
 import pl.com.morten.MyMorisation.jpa.repositories.CardsRepository;
 import pl.com.morten.MyMorisation.jpa.repositories.UsersRepository;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Optional;
@@ -110,6 +111,23 @@ public class CardServiceImpl implements CardService {
 
     public void deleteCard(long cardId){
         cardsRepository.deleteById(cardId);
+    }
+
+    public List<Long> getScheduledList(long userId, int minutes){
+        List<Long> list = new ArrayList<>();
+        List<Cards> cards = getAllCardsForUser(userId);
+        long periods = 48 * 60 / minutes;
+        for(int i = 0; i < periods; i++){
+
+            long currentTime = System.currentTimeMillis();
+            Date date = new Date(currentTime);
+            Date startDate = new Date(date.getTime() + i * minutes * 1000 * 60);
+            Date endDate = new Date(date.getTime() + (i + 1 ) * minutes  * 1000 * 60);
+            list.add(cards.stream()
+                    .filter(cards1 -> cards1.getTimeOfNextReview().before(endDate) && cards1.getTimeOfNextReview().after(startDate))
+                    .count());
+        }
+        return list;
     }
 
 
