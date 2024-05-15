@@ -21,5 +21,5 @@ public interface CardService {
     void updateCardsProgress(CardsProgressUpdateDto cardToUpdate);
 
     void deleteCard(long cardId);
-    List<Long> getScheduledList(long userid, int minutes);
+    int getAvailableCardCount(long userid);
 }

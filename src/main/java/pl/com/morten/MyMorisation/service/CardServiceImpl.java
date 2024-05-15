@@ -113,21 +113,8 @@ public class CardServiceImpl implements CardService {
         cardsRepository.deleteById(cardId);
     }
 
-    public List<Long> getScheduledList(long userId, int minutes){
-        List<Long> list = new ArrayList<>();
-        List<Cards> cards = getAllCardsForUser(userId);
-        long periods = 48 * 60 / minutes;
-        for(int i = 0; i < periods; i++){
-
-            long currentTime = System.currentTimeMillis();
-            Date date = new Date(currentTime);
-            Date startDate = new Date(date.getTime() + i * minutes * 1000 * 60);
-            Date endDate = new Date(date.getTime() + (i + 1 ) * minutes  * 1000 * 60);
-            list.add(cards.stream()
-                    .filter(cards1 -> cards1.getTimeOfNextReview().before(endDate) && cards1.getTimeOfNextReview().after(startDate))
-                    .count());
-        }
-        return list;
+    public int getAvailableCardCount(long userId){
+        return getAvailableToReviewCards(userId).size();
     }
 
 

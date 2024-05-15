@@ -25,47 +25,40 @@ public class CardController {
     }
 
     @PostMapping
-//    @PreAuthorize("hasRole('USER')")
     public void createCard(@RequestBody CardCreateDto cardsCreateDto) throws Exception {
         cardService.createCard(cardsCreateDto);
     }
 
     @GetMapping("/available/user/{userId}")
-//    @PreAuthorize("hasRole('USER')")
     public List<Cards> getAvailableToReviewCards(@PathVariable("userId") long userId) {
 
         return cardService.getAvailableToReviewCards(userId);
     }
 
     @GetMapping("/user/{userId}")
-//    @PreAuthorize("hasRole('USER')")
     public List<Cards> getAllCardsForUser(@PathVariable("userId") long userId) {
         return cardService.getAllCardsForUser(userId);
     }
 
     @PutMapping("/{cardId}")
-//    @PreAuthorize("hasRole('USER')")
     public void updateCard(@PathVariable("cardId") long cardId,
             @RequestBody CardDto cardDto) {
         cardService.updateCard(cardId, cardDto);
     }
 
     @PostMapping("/progress-update")
-//    @PreAuthorize("hasRole('USER')")
     public void updateCardProgress(@RequestBody CardsProgressUpdateDto cardToUpdate) {
         cardService.updateCardsProgress(cardToUpdate);
     }
 
     @DeleteMapping("/{cardId}")
-//    @PreAuthorize("hasRole('USER')")
     public void deleteCard(@PathVariable("cardId") long cardId) {
         cardService.deleteCard(cardId);
     }
 
-    @GetMapping("/user/{userId}/schedule/{minutes}")
-    public List<Long> getAllCardsForUser(@PathVariable("userId") long userId,
-                                         @PathVariable("minutes") int minutes) {
-        return cardService.getScheduledList(userId, minutes);
+    @GetMapping("/user/{userId}/count")
+    public int getAllCardsCountForUser(@PathVariable("userId") long userId) {
+        return cardService.getAvailableCardCount(userId);
     }
 
 
