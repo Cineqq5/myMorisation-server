@@ -33,4 +33,7 @@ public class Cards {
 
     @Column(name = "timeOfNextReview")
     private Date timeOfNextReview;
+
+    @Column(name = "imageBase64", length = 10000000)
+    private String imageBase64;
 }

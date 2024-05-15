@@ -32,6 +32,7 @@ public class CardServiceImpl implements CardService {
                 .translatedWord(cardsCreateDto.getTranslatedWord())
                 .progress(1)
                 .timeOfNextReview(new Date(currentTime))
+                .imageBase64(cardsCreateDto.getImageBase64())
 //                .timeOfNextReview(calculateNextDate(new Date(currentTime),1))
                 .build());
     }
@@ -77,6 +78,7 @@ public class CardServiceImpl implements CardService {
             Cards card = cards.get();
             card.setOriginalWord(cardDto.getOriginalWord());
             card.setTranslatedWord(cardDto.getTranslatedWord());
+            card.setImageBase64(cardDto.getImageBase64());
             cardsRepository.save(card);
         }
     }
@@ -91,9 +93,9 @@ public class CardServiceImpl implements CardService {
                 if (cardToUpdate.getCardResult() == CardResult.SUCCESS) {
                     card.setProgress(card.getProgress() + 1);
                 }
-                if (cardToUpdate.getCardResult() == CardResult.FAIL && card.getProgress() > 0) {
-                    card.setProgress(card.getProgress() - 1);
-                }
+//                if (cardToUpdate.getCardResult() == CardResult.FAIL && card.getProgress() > 0) {
+//                    card.setProgress(card.getProgress() - 1);
+//                }
                 cardsRepository.save(card);
             }
 

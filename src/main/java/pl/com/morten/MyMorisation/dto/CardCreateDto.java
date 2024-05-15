@@ -14,4 +14,6 @@ public class CardCreateDto {
     String originalWord;
 
     String translatedWord;
+
+    String imageBase64;
 }

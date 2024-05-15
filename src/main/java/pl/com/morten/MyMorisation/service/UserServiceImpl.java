@@ -31,15 +31,19 @@ public class UserServiceImpl implements UserService{
         UserInfoDto user = verifyUser(userCreateDto);
         if(user.getUserState() == UserState.ACCESS ||
         user.getUserState() == UserState.EXIST_BUT_INVALID) {return user;}
+        if (usersRepository.count() == 0) {
+            user.setRole("ADMIN");
+        } else {
+            user.setRole("USER");
+        }
         Users users = usersRepository.save(Users.builder()
                 .username(userCreateDto.getUsername())
                 .password(userCreateDto.getPassword())
                 .build());
         System.out.println(users.getId());
         usersTypeRepository.save(pl.com.morten.MyMorisation.jpa.entity.UserType.
-                builder().userId(users.getId()).userType("USER").build());
+                builder().userId(users.getId()).userType(user.getRole()).build());
         user.setId(users.getId());
-        user.setRole("USER");
         return user;
     }
     public List<UsersReadDto> getUsers(){
@@ -71,7 +75,7 @@ public class UserServiceImpl implements UserService{
         findUser(userId);
         pl.com.morten.MyMorisation.jpa.entity.UserType userType = usersTypeRepository
                 .findById(userId).get();
-        userType.setUserType(role);
+        userType.setUserType(role.equals("ADMIN")? "ADMIN": "USER");
         usersTypeRepository.save(userType);
     }
 
